@@ -28,3 +28,8 @@ Prontinho! Seu código já vai estar na main principal do Laboratório, e já va
 # Finalização
 
 Agradecemos a você colaborador por apoiar a nossa "Organização", por isso, utilize esse local como um verdadeiro Laboratório, teve uma ideia maluca? Só postar aqui e depois quando já tiver tudo pronto e entrar no Repositório principal, recomendamos **`dar um fork do seu projeto`** para que você tenha ele no seu próprio perfil.
+
+
+## Observação...
+
+Esse repositório é aberto, pois, aqui terá os futuros projetos da Hsyst em primeira mão! Apesar disso, bem instaveis é claro!
