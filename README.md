@@ -1,6 +1,6 @@
 # Laboratório (Hsyst Org)
 
-Olá colaborador! Seja bem-vindo ao seu laboratório, aqui você vai poder mandar todos os seus códigos para análise (Pull Request), e depois, ao ser analizado por mim (op3n) ou (kael/oimeu), vamos mergear o Pull Request, e seu código vai estar aqui!
+Olá colaborador! Seja bem-vindo ao seu laboratório, aqui você vai poder mandar todos os seus códigos para análise (Pull Request), e depois, ao ser analizado por mim (@op3ny) ou (kael @oimeu), vamos mergear o Pull Request, e seu código vai estar aqui!
 
 # Qual é o objetivo?
 
