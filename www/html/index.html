@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<script>
+    // Função para obter um cookie pelo nome
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Função para deletar um cookie pelo nome
+    function deleteCookie(name) {
+        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict`;
+    }
+
+    (async function () {
+        // Obter o tokenAES dos cookies
+        const tokenAES = getCookie('tokenAES');
+
+        if (tokenAES) {
+            try {
+                // Enviar o valor do tokenAES para o endpoint /login
+                const response = await fetch(`/login?tokenReg=${encodeURIComponent(tokenAES)}`);
+                const data = await response.json();
+
+                // Verificar o status da resposta
+                if (data.status === "Error") {
+                    // Se for inválido, deletar o cookie e redirecionar para register.html
+                    deleteCookie('tokenAES');
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Erro ao validar o tokenAES:', error);
+                deleteCookie('tokenAES');
+                window.location.href = '/login.html';
+            }
+        } else {
+            // Redirecionar para register.html se o cookie não existir
+            window.location.href = '/login.html';
+        }
+    })();
+</script>
+
+
+
+
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Teste</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: #4caf50;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        nav {
+            background: #333;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #4caf50;
+        }
+
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Bem-vindo ao Site de Teste</h1>
+    </header>
+
+    <nav>
+        <a href="#home">Início</a>
+        <a href="#about">Sobre</a>
+        <a href="#contact">Contato</a>
+        <a href="/logout.html">Logout</a>
+    </nav>
+
+    <main>
+        <section id="home">
+            <h2>Página Inicial</h2>
+            <p>Este é um site básico de teste para demonstração e aprendizado.</p>
+        </section>
+
+        <section id="about" style="margin-top: 2rem;">
+            <h2>Sobre</h2>
+            <p>Esta é a seção sobre. Use este site para testar suas habilidades e funcionalidades.</p>
+        </section>
+
+        <section id="contact" style="margin-top: 2rem;">
+            <h2>Contato</h2>
+            <p>Se precisar de ajuda, entre em contato conosco pelo e-mail: teste@exemplo.com</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Site de Teste. Todos os direitos reservados.</p>
+    </footer>
+</body>
+
+</html>
