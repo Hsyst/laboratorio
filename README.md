@@ -158,4 +158,18 @@ E pronto! Em hipotese, se o nome da sua homepage for `index.html`, e você coloc
 
 ## Como executar o servidor?
 
-Para executar o servidor, é bem simples. Supondo que você já tenha baixado daqui tudo certo, basta executar na pasta principal
+Para executar o servidor, é bem simples. Supondo que você já tenha baixado daqui tudo certo, basta executar na pasta principal (aonde tem os arquivos JS) e executar o comando `npm install crypto express jsonwebtoken sqlite3` e depois `npm run main`.
+
+
+---
+---
+---
+
+
+# Créditos
+
+O projeto **Hsyst Auth** está licenciado com a licença MIT. Portanto, o uso desse projeto, e permissões de uso estão sob o regimento dessa licença.
+
+---
+
+Made with love by Humberto/op3n/op3ny!
