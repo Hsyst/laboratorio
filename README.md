@@ -1,35 +1,161 @@
-# Laboratório (Hsyst Org)
+# Sistema de Login (Hsyst Auth)
+![Logo Hsyst Auth](./Hsyst_Auth-semfundo.png)
 
-Olá colaborador! Seja bem-vindo ao seu laboratório, aqui você vai poder mandar todos os seus códigos para análise (Pull Request), e depois, ao ser analizado por mim (@op3ny) ou (kael @oimeu), vamos mergear o Pull Request, e seu código vai estar aqui!
-
-# Qual é o objetivo?
-
-O obejetivo disso é porque, a partir da criação desse repositório, todo código criado pela organização deve ser primeiro colocado aqui (uma espécie de rascunho), e quando tiver tudo pronto, só abrir uma Issue, falando o nome do projeto, e explicando tudo direitinho, que vamos analizar e dar o FeedBack.
+## Descrição
+Criar um sistema de autenticação seguro de ponta a ponta, no qual mesmo com os dados interceptados, se torna muito dificil capturar os dados.
 
 ---
 
-**Atenção:** Em caso de descumprimento da nova regra, penas podem ser aplicadas.
+# Teoria
 
-# Aproveite!
+O sistema, basicamente se consiste em **4** endpoints, sendo 2 deles de criptografia.
 
-Se você teve uma ideia de projeto, pode colocar aqui sem culpa! Vamos analizar, e caso esteja de acordo, vamos permitir a criação do repo principal!
+## Endpoint /crypt1
 
-# Resumo
+O endpoint crypt1, é responsável por receber os dados em plain text, ou seja, totalmente desprotegido, e realizar a primeira camada de segurança, sendo ela **JWT**. Que terá os dados sem permitir nenhuma forma de adulteração.
 
-- 1° **Crie uma Branch**
-- 2° **Poste seu código nessa Branch**
-- 3° **Ao finalizar, abra um Pull Request pra Branch *Laboratorio***
-- 4° **Ao fazer isso, vamos analizar seu código e já fazer todas as paradas!**
-- 5° **Por último, quando finalizarmos a verificação vamos abrir uma ISSUE avisando que você já pode abrir uma Pull Request para o MAIN.**
+---
 
-Prontinho! Seu código já vai estar na main principal do Laboratório, e já vamos criar um repositório dentro da Hsyst para você postar o código.
+**Exemplo de uso do crypt1**
+seusiteaqui.com/crypt1?email=op3n@hsyst.com.br&senha=1234
 
 
-# Finalização
+## Endpoint /crypt2
 
-Agradecemos a você colaborador por apoiar a nossa "Organização", por isso, utilize esse local como um verdadeiro Laboratório, teve uma ideia maluca? Só postar aqui e depois quando já tiver tudo pronto e entrar no Repositório principal, recomendamos **`dar um fork do seu projeto`** para que você tenha ele no seu próprio perfil.
+O endpoint crypt2, é responsável por receber e conferir e criptografar os dados, assim, impossibilitando qualquer tipo de adulteração na requisição. Para isso, ele descriptografa o JWT, e confere se o email e senha recebidos e os compara com os que estavam no JWT. (Obs:. O token JWT também é verificado, vendo se a criptografia está correta.). Ele entrega o token AES, que não permite a leitura e nem a escrita sem a senha que está em nossos servidores.
+
+---
+
+**Exemplo de uso do crypt2**
+seusiteaqui.com/crypt2?email=op3n@hsyst.com.br&senha=1234&crypt1=**JWT_RECEBIDO_PELO_ENDPOINT_CRYPT1**
 
 
-## Observação...
+# Endpoint /register
 
-Esse repositório é aberto, pois, aqui terá os futuros projetos da Hsyst em primeira mão! Apesar disso, bem instaveis é claro!
+O endpoint /register é responsável por receber o Token AES gerado pelo crypt2, verificar se o token é válido, e se utiliza realmente a mesma key que está no servidor, e adiciona ao banco de dados.
+
+---
+
+**Exemplo de uso do register**
+seusiteaqui.com/register?tokenReg=**SEU_TOKEN_AES_AQUI**
+
+
+# Endpoint /login
+
+O endpoint /login é responsável por receber o Token AES (igualmente ao /register), e verificar se o token é válido. Em seguida, ele descriptografa esse token e todos os tokens da database, e confere para verificar se o email:senha está no servidor.
+
+---
+
+**Exemplo de uso do login**
+seusiteaqui.com/login?tokenReg=**SEU_TOKEN_AES_AQUI**
+
+
+
+---
+---
+
+# Fluxos
+
+Agora eu gostaria de falar para você, qual é o fluxo que é feito quanto no Login quanto no Registro para que esses dados saiam e entrem 100% protegidos.
+
+## Fluxo 1 (/login)
+
+Para que o seu formulário chegue até o servidor é feito o fluxo:
+
+### /crypt1?email=seuemailaqui@gmail.com&senha=suasenhaaqui@#123
+Resposta: TOKEN_JWT_DE_REGISTRO
+
+### /crypt2?email=seuemailaqui@gmail.com&senha=suasenhaaqui@#123&crypt1=TOKEN_JWT_DE_REGISTRO
+Resposta: TOKEN_AES_DE_REGISTRO
+
+### /login?tokenReg=TOKEN_AES_DE_REGISTRO
+
+
+---
+---
+
+## Fluxo 2 (/register)
+
+Para que o seu formulário chegue até o servidor é feito o fluxo:
+
+### /crypt1?email=seuemailaqui@gmail.com&senha=suasenhaaqui@#123
+Resposta: TOKEN_JWT_DE_REGISTRO
+
+### /crypt2?email=seuemailaqui@gmail.com&senha=suasenhaaqui@#123&crypt1=TOKEN_JWT_DE_REGISTRO
+Resposta: TOKEN_AES_DE_REGISTRO
+
+### /register?tokenReg=TOKEN_AES_DE_REGISTRO
+
+
+---
+---
+
+
+# Como utilizar de modo prático?
+
+Bom, quando você for utilizar, você precisa se atentar a estrutura de diretórios, e o que você deve adicionar na source do seu site para que a autenticação funcione.
+
+
+## Estrutura de diretórios
+
+/dev-tools (Ferramentas para testes e etc, se você não entender como funciona, só ignora ;-))
+
+---
+
+/www (Páginas pré-definidas de login, registro e logout. Além de uma index para redirecionar o usuário.)
+
+---
+
+/www/html (Seu site, aqui você vai colocar o seu site, e o servidor já vai fazer o resto por você!)
+
+
+---
+---
+
+## O que devo alterar no meu código?
+
+Simples, no cabeçalho do seu HTML (de preferência no inicio do arquivo) você deve adicionar o seguinte script:
+
+```html
+<script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function deleteCookie(name) {
+        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict`;
+    }
+
+    (async function () {
+        const tokenAES = getCookie('tokenAES');
+
+        if (tokenAES) {
+            try {
+                const response = await fetch(`/login?tokenReg=${encodeURIComponent(tokenAES)}`);
+                const data = await response.json();
+
+                if (data.status === "Error") {
+                    deleteCookie('tokenAES');
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Erro ao validar o tokenAES:', error);
+                deleteCookie('tokenAES');
+                window.location.href = '/login.html';
+            }
+        } else {
+            window.location.href = '/login.html';
+        }
+    })();
+</script>
+```
+
+
+E pronto! Em hipotese, se o nome da sua homepage for `index.html`, e você colocar esse script, ele já vai estar pronto para o uso!
+
+
+## Como executar o servidor?
+
+Para executar o servidor, é bem simples. Supondo que você já tenha baixado daqui tudo certo, basta executar na pasta principal
