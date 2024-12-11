@@ -1,0 +1,27 @@
+{
+  "name": "hsyst-auth",
+  "version": "1.0.0",
+  "description": "Um sistema de segurança",
+  "main": "index.js",
+  "scripts": {
+    "gen": "node dev-tools/gen-aes.js",
+    "main": "node index.js",
+    "decrypt": "node dev-tools/decrypter.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hsyst/Hsyst-Auth.git"
+  },
+  "author": "Humberto (op3n)",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Hsyst/Hsyst-Auth/issues"
+  },
+  "homepage": "https://github.com/Hsyst/Hsyst-Auth#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7"
+  }
+}
