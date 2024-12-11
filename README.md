@@ -1,5 +1,5 @@
 # Sistema de Login (Hsyst Auth)
-![Logo Hsyst Auth](./Hsyst_Auth-semfundo.png)
+![Logo Hsyst Auth](https://github.com/Hsyst/Hsyst-Auth/Hsyst_Auth-semfundo.png)
 
 ## Descrição
 Criar um sistema de autenticação seguro de ponta a ponta, no qual mesmo com os dados interceptados, se torna muito dificil capturar os dados.
